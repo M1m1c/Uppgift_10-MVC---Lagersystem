@@ -6,6 +6,22 @@
 
 <h1>ProductViewIndex</h1>
 
+<form asp-controller="Products" asp-action="CategoryFilter" method="get">
+    <div class="input-group">
+        <input type="search" name="category" placeholder="search on category"/>
+       
+        <div class="input-group-append">
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+
+</form>
+
+<p>
+    Categories are "mat" and "dricka".
+</p>
+
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>

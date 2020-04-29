@@ -21,24 +21,43 @@ namespace Storage.Controllers
 
         public async Task<IActionResult> ProductViewIndex()
         {
-            var model = _context.Product.Select(p => new ProductViewModel
-            {
-                Name = p.Name,
-                Price=p.Price,
-                Count=p.Count,
-                InventoryValue= p.Price * p.Count
-            });
-
-            return View("ProductViewIndex",await model.ToListAsync());
+           
+            return View(await GetViewModel(_context.Product).ToListAsync());
         }
 
+        //Categorier är mat och dricka
+        public async Task<IActionResult> CategoryFilter(string category=null)
+        {
+            var modelView = GetViewModel(_context.Product);
+
+            if (category != null)
+            {
+                var modelCategory = _context.Product.Where(p => p.Category.ToLower() == category.ToLower());
+
+                modelView = GetViewModel(modelCategory);
+            }
+
+            return View("ProductViewIndex", await modelView.ToListAsync());
+        }
+
+        public IQueryable<ProductViewModel> GetViewModel(IQueryable<Product> collection) 
+        {
+            var model = collection.Select(p => new ProductViewModel
+            {
+                Name = p.Name,
+                Price = p.Price,
+                Count = p.Count,
+                InventoryValue = p.Price * p.Count
+            });
+
+            return model;
+        }
         
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
-            //return View("ProductViewIndex", await model.ToListAsync());
         }
 
         // GET: Products/Details/5
