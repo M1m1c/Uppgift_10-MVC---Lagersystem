@@ -19,6 +19,25 @@ namespace Storage.Controllers
             _context = context;
         }
 
+        public IActionResult NewActionResult()
+        {
+            IEnumerable<ProductViewModel> viewModels = new List<ProductViewModel>();
+            foreach (var item in _context.Product)
+            {
+                ProductViewModel temp = new ProductViewModel();
+                temp.Name = item.Name;
+                temp.Price = item.Price;
+                temp.Count = item.Count;
+                temp.InventoryValue = item.Price * item.Count;
+
+                viewModels.Append(temp);
+            }
+
+            return View(viewModels);
+        }
+
+        
+
         // GET: Products
         public async Task<IActionResult> Index()
         {
