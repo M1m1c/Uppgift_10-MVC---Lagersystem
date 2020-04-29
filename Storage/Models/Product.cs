@@ -13,6 +13,7 @@ namespace Storage.Models
         [Required,MaxLength(60)]
         public string Name { get; set; }
         [Required, Range(0,1000)]
+        [DisplayFormat(DataFormatString =("{0:C}"))]
         public int Price { get; set; }
 
         [Required, DataType(DataType.Date)]
