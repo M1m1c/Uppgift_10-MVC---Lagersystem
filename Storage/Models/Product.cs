@@ -20,7 +20,7 @@ namespace Storage.Models
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public string Category { get; set; }
+        public Category Category { get; set; }
 
         public string Shelf { get; set; }
 
@@ -28,5 +28,11 @@ namespace Storage.Models
         public int Count { get; set; }
 
         public string Description { get; set; }
+    }
+
+    public enum Category
+    {
+        Dricka,
+        Mat
     }
 }

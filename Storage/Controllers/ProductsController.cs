@@ -32,13 +32,15 @@ namespace Storage.Controllers
 
             if (category != null)
             {
-                var modelCategory = _context.Product.Where(p => p.Category.ToLower() == category.ToLower());
+                var modelCategory = _context.Product.Where(p => p.Category.ToString().ToLower() == category.ToLower());
 
                 modelView = GetViewModel(modelCategory);
             }
 
             return View("ProductViewIndex", await modelView.ToListAsync());
         }
+
+     
 
         public IQueryable<ProductViewModel> GetViewModel(IQueryable<Product> collection) 
         {
@@ -52,7 +54,28 @@ namespace Storage.Controllers
 
             return model;
         }
-        
+
+
+        public async Task<IActionResult> ProductListViewIndex()
+        {
+            var listViewModel = new ListViewModel()
+            {
+                ProductViewModels = await GetViewModel(_context.Product).ToListAsync(),
+                Categories = await FindCategoriesInDatabase()
+            };
+         
+            return View(listViewModel);
+        }
+
+        private async Task<IEnumerable<SelectListItem>> FindCategoriesInDatabase()
+        {
+            return await _context.Product
+                .Select(c => c.Category)
+                .Distinct()
+                .Select(c => new SelectListItem(c.ToString(), c.ToString())
+                ).ToListAsync();
+        }
+
 
         // GET: Products
         public async Task<IActionResult> Index()
